@@ -1,0 +1,21 @@
+<ul class="navbar">
+            <li><a href="#"> Home</a></li>
+            <li><a href="#"> About me</a></li>
+            <li><a href="#"> Workout plans</a></li>
+            <li><a href="#"> Meal plan</a></li>
+            <li><a href="#"> E-books</a></li>
+            <li><a href="#"> Services</a></li>
+            <li><a href="#"> Contact</a></li>
+
+            <div class="auth-group">
+                {% if not user.is_authenticated %}
+                <li><a href="#"><ion-icon name="add-circle-outline"></ion-icon> Register</a></li>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    {{ user.username }}
+                {% else %}
+                <li><a href="#"> Login</a></li>
+                {% endif %}
+            </div>
+        </ul>
