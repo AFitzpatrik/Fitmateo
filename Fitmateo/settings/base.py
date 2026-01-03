@@ -108,13 +108,16 @@ AUTH_USER_MODEL = "accounts.User"
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "cs"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Prague"
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True
+
 
 
 # Static files (CSS, JavaScript, Images)
