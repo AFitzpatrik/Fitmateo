@@ -109,3 +109,9 @@ Základní architektura je připravená s ohledem na škálování, rozšiřitel
 
 Tento projekt je zatím určen pro osobní a výukové účely.  
 Licenční podmínky budou upřesněny v pozdější fázi vývoje.
+
+
+
+
+
+
