@@ -24,3 +24,6 @@ media/
 .DS_Store
 Thumbs.db
 
+
+/viewer/migrations/
+/accounts/migrations/
