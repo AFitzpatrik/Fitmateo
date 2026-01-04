@@ -1,7 +1,8 @@
 from django.test import TestCase
-from viewer.models import Country, City, Sport, Location, Event
+from viewer.models import Country, Region, City, Sport, Location, Event
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
 
 class CountryModelTest(TestCase):
 
@@ -18,21 +19,25 @@ class CityModelTest(TestCase):
 
     def setUp(self):
         self.country = Country.objects.create(name="Česká republika")
+        self.region = Region.objects.create(name="Hlavní město Praha")
 
     def test_create_city(self):
         city = City.objects.create(
             name="Praha",
             country=self.country,
+            region=self.region,
             zip_code="11000"
         )
 
         self.assertEqual(city.name, "Praha")
         self.assertEqual(city.country.name, "Česká republika")
+        self.assertEqual(city.region.name, "Hlavní město Praha")
 
     def test_city_str(self):
         city = City.objects.create(
             name="Brno",
             country=self.country,
+            region=self.region,
             zip_code="60200"
         )
         self.assertEqual(str(city), "Brno")
@@ -53,9 +58,12 @@ class LocationModelTest(TestCase):
 
     def setUp(self):
         self.country = Country.objects.create(name="Česká republika")
+        self.region = Region.objects.create(name="Hlavní město Praha")
+
         self.city = City.objects.create(
             name="Praha",
             country=self.country,
+            region=self.region,
             zip_code="11000"
         )
 
@@ -68,6 +76,7 @@ class LocationModelTest(TestCase):
         )
 
         self.assertEqual(location.city.name, "Praha")
+        self.assertEqual(location.city.region.name, "Hlavní město Praha")
 
 
 class EventModelTest(TestCase):
@@ -81,9 +90,12 @@ class EventModelTest(TestCase):
         )
 
         self.country = Country.objects.create(name="Česká republika")
+        self.region = Region.objects.create(name="Hlavní město Praha")
+
         self.city = City.objects.create(
             name="Praha",
             country=self.country,
+            region=self.region,
             zip_code="11000"
         )
 
@@ -110,4 +122,4 @@ class EventModelTest(TestCase):
 
         self.assertEqual(event.sport.name, "Box")
         self.assertEqual(event.owner_of_event.email, "test@test.cz")
-
+        self.assertEqual(event.location.city.region.name, "Hlavní město Praha")
