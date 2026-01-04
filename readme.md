@@ -114,4 +114,70 @@ Licenční podmínky budou upřesněny v pozdější fázi vývoje.
 
 
 
+WORK IN PROGRESS
+## VIEWER APP
+- [ ] 1.0 Seznam sportů (abecedně)
+  - [ ] 1.1 Možnost kliknutí a zobrazení sportovních akcí
+
+- [ ] 2.0 Detail sportu
+  - [ ] 2.1 Název
+  - [ ] 2.2 Typ sportu
+  - [ ] 2.3 země
+  - [ ] 2.4 lokace
+  - [ ] 2.5 město
+  - [ ] 2.6 začátek
+  - [ ] 2.7 konec
+  - [ ] 2.8 kapacita
+---
+- [ ] 3.0 Seznam událostí (abecedně)
+  - [ ] 1.1 Možnost filtrování dle:
+    - [ ] 1.1.1 Data
+    - [ ] 1.1.2 Sportu
+    - [ ] 1.1.3 Města
+    - [ ] 1.1.4 Paginace výsledků 3x4?
+---
+- [ ] 4.0 Detail události
+-   [ ] 4.1 Název
+-   [ ] 4.2 Datum od/do
+-   [ ] 4.3 Čas od/do
+-   [ ] 4.4 Celý popis události
+-   [ ] 4.5 Adresa,lokace
+-   [ ] 4.6 Obrázek
+-   [ ] 4.7 Proklik ze seznamu událostí
+---
+- [ ] 5.0 Přidávání událostí
+  - [ ] 5.1 Název
+  - [ ] 5.2 Datum od/do
+  - [ ] 5.3 Čas od/do
+  - [ ] 5.4 Vlastník (uživatel, který událost vytvořil)
+  - [ ] 5.5 Obrázek události
+  - [ ] 5.6 Popis události
+---
+- [ ] 6.0 Úprava událostí - PATRIK
+  - [x] 6.1 **Úprava**
+    - [x] 6.1.1 Pouze ORGANIZÁTOR
+  - [x] 6.2 **Mazání**
+    - [x] 6.2.1 Pouze ORGANIZÁTOR který je VLASTNÍK
+---
+- [ ] 7.0 Seznam měst
+  - [ ] 7.1 Řazení do krajů
+  - [ ] 8.2 Interaktivní mapa krajů, po kliknutí se zobrazí stránka s městy v kraji
+
+- [ ] 8.0 Detail města
+  - [ ] 8.1 Název
+  - [ ] 8.2 Zip code
+  - [ ] 8.3 Země
+  - [ ] 8.4 Kraj
+
+
+## SEARCH BAR APP
+- [ ] 1.0 Search bar v navbaru
+    - [ ] 1.1 Hledání dle klíčového slova
+    - [ ] 1.2 Hledání v popisku, názvu a dle sportu
+    - [ ] 1.3 Filtrování výsledků
+---
+
+
+
+
 
