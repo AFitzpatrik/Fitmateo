@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import ForeignKey, DateTimeField
 
+
 class Country(models.Model): #Stát kde bude událost, příprava pro rožšíření mio ČR
     name = models.CharField(
         max_length=100,
@@ -24,10 +25,21 @@ class Country(models.Model): #Stát kde bude událost, příprava pro rožšíř
         return f"Country(name={self.name})"
 
 
+class Region(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name="Název")
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class City(models.Model): #Město kde bude událost
     name = models.CharField(max_length=100, unique=True, null=False, blank=False, verbose_name="Název")
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="cities", verbose_name="Název")
     zip_code = models.CharField(max_length=10, null=False, blank=False, verbose_name="PSČ")
+    region = models.ForeignKey(Region, on_delete=models.PROTECT, related_name="cities", verbose_name="Kraj")
 
     class Meta:
         verbose_name = "Město"
