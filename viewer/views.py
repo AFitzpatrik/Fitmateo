@@ -9,4 +9,5 @@ class EventListView(ListView):
     model = Event
     context_object_name = 'events'
     paginate_by = 9
+    ordering = ["name"] #Prozatím dle jména, později dle data nejblížeší události
 

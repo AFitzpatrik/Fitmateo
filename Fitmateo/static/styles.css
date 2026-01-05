@@ -1,120 +1,187 @@
+/* ========================================================= */
+/* ================== COLOR VARIABLES ====================== */
+/* ========================================================= */
 
-/* ----- COLOURS ----- */
-/* Default dark mode*/
 :root {
     /* ----- DARK THEME (default) ----- */
-    --primary-dark: #1a1a1a;       /* Dark black, Usage: Main brand color, primary buttons, navigation background, logo text  */
-    --secondary-dark: #16a34a;     /* Green for progress, Usage: Success states, progress bars, completion indicators, positive actions, CTA Buttons */
-    --accent-dark: #fbbf24;        /* Yellow as the main accent, Usage: Call-to-action buttons, highlights, notifications, important alerts, hover states */
-    --dark-dark: #111111;          /* Very dark, Usage: Deep backgrounds, modal overlays, footer background, very dark sections */
-    --neutral-dark: #6b7280;       /* Neutral gray, Usage: Secondary text, placeholder text, disabled elements, subtle borders */
-    --background-dark: #0f0f0f;    /* Very dark background, Usage: Main page background, body background, full-screen overlays */
-    --card-bg-dark: #1f1f1f;       /* Dark card background, Usage: Card backgrounds, form containers, content boxes, sidebar panels */
-    --white-dark: #ffffff;         /* White, Usage: Primary text on dark backgrounds, icons, contrast elements */
-    --text-dark: #e5e5e5;          /* Light text, Usage: Main body text, headings, readable content on dark backgrounds */
-    --text-muted-dark: #a1a1a1;    /* Muted text, Usage: Secondary information, timestamps, captions, less important text */
-    --border-dark: #333333;        /* Dark borders, Card borders, input field borders, dividers, separators, table borders */
+    --primary-dark: #1a1a1a;
+    --secondary-dark: #16a34a;
+    --accent-dark: #fbbf24;
+    --dark-dark: #111111;
+    --neutral-dark: #6b7280;
+    --background-dark: #0f0f0f;
+    --card-bg-dark: #1f1f1f;
+    --white-dark: #ffffff;
+    --text-dark: #e5e5e5;
+    --text-muted-dark: #a1a1a1;
+    --border-dark: #333333;
 
-    /* ----- LIGHT THEME ----- */
-    --primary-light: #1a1a1a;    /* Remains dark black */
-    --secondary-light: #16a34a;  /* Remains green for progress */
-    --accent-light: #f59e0b;     /* Slightly darker yellow for better contrast on light */
-    --dark-light: #0f172a;       /* Dark for text and important elements */
-    --neutral-light: #64748b;    /* Neutral gray */
-    --background-light: #ffffff; /* White background instead of dark */
-    --card-bg-light: #f8fafc;    /* Very light gray card background */
-    --white-light: #ffffff;      /* White */
-    --text-light: #1f2937;       /* Dark text instead of light */
-    --text-muted-light: #6b7280; /* Dark gray muted text */
-    --border-light: #e5e7eb;     /* Light borders instead of dark */
+    /* ----- LIGHT THEME (zatím nepoužíváno, ale OK nechat) ----- */
+    --primary-light: #1a1a1a;
+    --secondary-light: #16a34a;
+    --accent-light: #f59e0b;
+    --dark-light: #0f172a;
+    --neutral-light: #64748b;
+    --background-light: #ffffff;
+    --card-bg-light: #f8fafc;
+    --white-light: #ffffff;
+    --text-light: #1f2937;
+    --text-muted-light: #6b7280;
+    --border-light: #e5e7eb;
 }
 
 
+/* ========================================================= */
+/* ================== GLOBAL / BODY ======================== */
+/* ========================================================= */
 
-/* ----- MAIN BODY ----- */
-html, body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, sans-serif;
-}
+html,
 body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--background-dark);
-  color: var(--text-dark);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', Roboto, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-dark);
+    color: var(--text-dark);
 }
 
 
+/* ========================================================= */
+/* ================== NAVBAR =============================== */
+/* ========================================================= */
 
-
-/* ----- NAVBAR SECTION ----- */
-/* Style the whole <ul> with class="navbar" */
 ul.navbar {
-  list-style-type: none;   /* Remove default bullets */
-  margin: 0;               /* Remove default margin */
-  padding: 0;              /* Remove default padding */
-  overflow: hidden;        /* Contain floated elements inside the ul */
-  background-color: #333; /* Dark background for the navbar */
-  position: sticky;       /* Makes the navbar stick to the top when scrolling */
-  top: 0;                 /* Position from the top (needed with sticky) */
-  z-index: 1000;          /* Keeps the navbar above other content */
-  display: flex;          /* Arrange <li> items in a row (horizontal) */
-  align-items: center;     /* Vertically center the items inside the navbar */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
 }
 
-/* Style every <li> inside ul.navbar */
 ul.navbar li {
-  margin:0;             /* Place each list item side by side (horizontally) */
+    margin: 0;
 }
 
-/* Style every <a> inside li (menu links) */
 ul.navbar li a {
-  display: block;          /* Make the entire link area clickable */
-  color: var(--text-dark); /* White text color */
-  text-align: center;      /* Center the text inside the link */
-  padding: 14px 16px;      /* Add spacing inside links (top/bottom 14px, left/right 16px) */
-  text-decoration: none;   /* Remove underline from links */
+    display: block;
+    padding: 14px 16px;
+    color: var(--text-dark);
+    text-decoration: none;
+    text-align: center;
 }
 
-/* Change background color when hovering over a link */
 ul.navbar li a:hover {
-  background-color: #111;  /* Darker background on hover */
+    background-color: #111;
 }
 
-/* Auth group (REGISTER/LOGIN) positioning to te right */
 ul.navbar .auth-group {
-  margin-left: auto;
-  display: flex;
+    margin-left: auto;
+    display: flex;
 }
-/* ----- FOOTER SECTION ----- */
+
+
+/* ========================================================= */
+/* ================== FOOTER =============================== */
+/* ========================================================= */
+
 footer {
-  background-color: var(--dark-dark);    /* dark background */
-  color: var(--text-muted-dark);         /* muted text color */
-  text-align: center;                    /* center align the text */
-  padding: 20px 0;                       /* vertical padding */
-  font-size: 14px;                       /* smaller font size */
-  border-top: 1px solid var(--border-dark); /* top border */
+    background-color: var(--dark-dark);
+    color: var(--text-muted-dark);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    border-top: 1px solid var(--border-dark);
 }
 
 footer p {
-  margin: 0;                            /* remove default margin from paragraph */
+    margin: 0;
 }
 
-/* ----- ACCESSORIES ----- */
-.social-icon ion-icon {  /* Styling social media icons */
-    color: white;
 
+/* ========================================================= */
+/* ================== EVENTS LIST ========================== */
+/* ========================================================= */
+
+.page-title {
+    margin: 20px 0;
+    font-size: 32px;
 }
 
-/* ----- LIST SECTION ----- */
-/* Right now styles a ebook list to a grid and cards */
-
-.card-container-list {
-    display: grid;                          /* sets a grid layout */
-    grid-template-columns: repeat(3, 1fr);  /* columns in grid (make 3 columns, all will take the same space */
-    gap: 10px;                              /* space between cards */
-    margin-top: 10px;                       /* space around whole container */
+/* Grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-.ebook-cover {
+/* Card */
+.event-card {
+    background-color: var(--card-bg-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-dark);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Image */
+.event-image img {
     width: 100%;
-    height: auto;
+    height: 180px;
+    object-fit: cover;
+}
+
+.image-placeholder {
+    height: 180px;
+    background-color: #2a2a2a;
+}
+
+/* Content */
+.event-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.event-title {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.event-body p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--text-muted-dark);
+}
+
+/* Button */
+.btn-detail {
+    margin-top: auto;
+    padding: 10px 14px;
+    background-color: var(--accent-dark);
+    color: #000;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.btn-detail:hover {
+    background-color: #f59e0b;
 }

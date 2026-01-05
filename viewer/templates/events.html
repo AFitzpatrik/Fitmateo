@@ -1,21 +1,38 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-Eventy
-{% endblock %}
+{% block title %}Eventy{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Eventy</h1>
+<h1 class="page-title">Eventy</h1>
 
-<ul>
-  {% for event in events %}
-  <li>
-    <a href="{% url 'events' %}">
-      {{ event.name }}
-    </a>
-  </li>
-  {% empty %}
-  <li> Žádné eventy v databázi</li>
-  {% endfor %}
-</ul>
+<div class="events-grid">
+    {% for event in events %}
+    <div class="event-card">
+
+        <div class="event-image">
+            {% if event.event_image %}
+            <img src="{{ event.event_image.url }}" alt="{{ event.name }}">
+            {% else %}
+            <img src="{% static 'images/placeholder.png' %}" alt="Bez obrázku">
+            {% endif %}
+        </div>
+
+        <div class="event-body">
+            <h3 class="event-title">{{ event.name }}</h3>
+
+            <p><strong>Typ:</strong> {{ event.sport.name }}</p>
+            <p><strong>Datum:</strong> {{ event.start_date_time|date:"d.m.Y H:i" }}</p>
+            <p><strong>Místo:</strong> {{ event.location.name }}, {{ event.location.city.name }}</p>
+
+            <a class="btn-detail" href="#">
+                Zobrazit detail
+            </a>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>Žádné eventy v databázi</p>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -129,7 +129,7 @@ WORK IN PROGRESS
   - [ ] 2.7 konec
   - [ ] 2.8 kapacita
 ---
-- [ ] 3.0 Seznam událostí (abecedně)
+- [x] 3.0 Seznam událostí (abecedně)
   - [ ] 1.1 Možnost filtrování dle:
     - [ ] 1.1.1 Data
     - [ ] 1.1.2 Sportu
@@ -153,7 +153,7 @@ WORK IN PROGRESS
   - [ ] 5.5 Obrázek události
   - [ ] 5.6 Popis události
 ---
-- [ ] 6.0 Úprava událostí - PATRIK
+- [ ] 6.0 Úprava událostí
   - [x] 6.1 **Úprava**
     - [x] 6.1.1 Pouze ORGANIZÁTOR
   - [x] 6.2 **Mazání**
