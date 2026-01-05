@@ -11,3 +11,4 @@ class EventListView(ListView):
     paginate_by = 9
     ordering = ["name"] #Prozatím dle jména, později dle data nejblížeší události
 
+#zkouška komentáře
