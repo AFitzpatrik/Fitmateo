@@ -1,11 +1,8 @@
 <ul class="navbar">
-            <li><a href="{% url 'home' %}"> Home</a></li>
-            <li><a href="{% url 'events' %}"> Events</a></li>
-            <li><a href="#"> Workout plans</a></li>
-            <li><a href="#"> Meal plan</a></li>
-            <li><a href="#"> E-books</a></li>
-            <li><a href="#"> Services</a></li>
-            <li><a href="#"> Contact</a></li>
+            <li><a href="{% url 'home' %}"> Domů</a></li>
+            <li><a href="{% url 'events' %}"> Události</a></li>
+            <li><a href="#"> Skupiny</a></li>
+            <li><a href="#"> Lidé</a></li>
 
             <div class="auth-group">
                 {% if not user.is_authenticated %}
