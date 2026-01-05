@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Eventy
+{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Eventy</h1>
+
+<ul>
+  {% for event in events %}
+  <li>
+    <a href="{% url 'events' %}">
+      {{ event.name }}
+    </a>
+  </li>
+  {% empty %}
+  <li> Žádné eventy v databázi</li>
+  {% endfor %}
+</ul>
+{% endblock %}

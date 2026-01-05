@@ -22,6 +22,6 @@ from viewer.views import EventListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('events/', EventListView.as_view(), name='events'),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('events/', EventListView.as_view(template_name='events.html'), name='events'),
 ]

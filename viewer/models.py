@@ -10,7 +10,7 @@ class Country(models.Model): #Stát kde bude událost, příprava pro rožšíř
         null=False,
         blank=False,
         error_messages={"unique": "Stát s tímto názvem již existuje."},
-        verbose_name="Název",
+        verbose_name="Název země",
     )
 
     class Meta:
