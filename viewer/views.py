@@ -11,4 +11,10 @@ class EventListView(ListView):
     paginate_by = 9
     ordering = ["name"] #Prozatím dle jména, později dle data nejblížeší události
 
-#zkouška komentáře
+
+class EventDetailView(ListView):
+    template_name = 'viewer/templates/event_detail.html'
+    model = Event
+    context_object_name = 'event'
+#    # Základní implementace, bude potřeba upravit pro detail události
+
