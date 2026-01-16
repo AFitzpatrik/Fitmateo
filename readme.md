@@ -188,7 +188,11 @@ WORK IN PROGRESS
 
 Poznámky na příště
 
-Bodybuidling svg rozbité na mape
-kickbox svg rozbité na mape
+Na událost na mape přidat obrázky, ikonu sportu, adresu
+Chci aby když uživatel přidá místo, aby se tam dala automaticky adresa.
+Chci aby se tam zobrazovalo znovu hodnocení místa
+Chci aby se tam po rozkliknutí zobrazovali recenze a komentáře
+
+
 
 
