@@ -12,11 +12,19 @@ def validate_half_step(value):
         raise ValidationError('Rating must be in 0.5 steps')
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Place(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    tags = models.ManyToManyField(Tag, related_name='places', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def average_rating(self):
