@@ -32,6 +32,7 @@ urlpatterns = [
     #API
     path('admin/', admin.site.urls),
     path('api/', include('places.api.urls')),
+    path('', include('places.urls')),
 ]
 
 if settings.DEBUG:
