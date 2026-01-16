@@ -178,6 +178,13 @@ WORK IN PROGRESS
 ---
 
 
+## Places app
+- [ ] 1.0 Seznam míst (abecedně)
+  - [ ] 1.1 Možnost kliknutí a zobrazení detailu místa
+  - [ ] 1.2 Filtrování tagů
+  
+
+
 
 
 
