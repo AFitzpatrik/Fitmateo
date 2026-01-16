@@ -17,32 +17,32 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const markerIcons = {
     kickbox: L.icon({
-        iconUrl: '/static/markers/kickbox.svg',
+        iconUrl: '/static/markers/KB.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),
     box: L.icon({
-        iconUrl: '/static/markers/box.svg',
+        iconUrl: '/static/markers/BOX.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),
     mma: L.icon({
-        iconUrl: '/static/markers/mma.svg',
+        iconUrl: '/static/markers/MMA.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),
     muaythai: L.icon({
-        iconUrl: '/static/markers/muaythai.svg',
+        iconUrl: '/static/markers/MT.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),
     bodybuilding: L.icon({
-        iconUrl: '/static/markers/bodybuilding.svg',
+        iconUrl: '/static/markers/BB.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),
     fitness: L.icon({
-        iconUrl: '/static/markers/fitness.svg',
+        iconUrl: '/static/markers/FITNESS.svg',
         iconSize: [40, 60],
         iconAnchor: [20, 60],
     }),

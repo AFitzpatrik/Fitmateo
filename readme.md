@@ -186,5 +186,9 @@ WORK IN PROGRESS
 
 
 
+Poznámky na příště
+
+Bodybuidling svg rozbité na mape
+kickbox svg rozbité na mape
 
 
