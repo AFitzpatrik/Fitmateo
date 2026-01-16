@@ -3,6 +3,7 @@
             <li><a href="{% url 'events' %}"> Události</a></li>
             <li><a href="#"> Skupiny</a></li>
             <li><a href="#"> Lidé</a></li>
+            <li><a href="{% url 'map' %}">MAPA</a></li>
 
             <div class="auth-group">
                 {% if not user.is_authenticated %}
@@ -16,3 +17,4 @@
                 {% endif %}
             </div>
         </ul>
+
