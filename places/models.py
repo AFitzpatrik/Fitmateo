@@ -20,6 +20,22 @@ class Tag(models.Model):
 
 
 class Place(models.Model):
+    PLACE_TYPE_CHOICES = [
+        ('kickbox', 'Kickbox'),
+        ('box', 'Box'),
+        ('mma', 'MMA'),
+        ('muaythai', 'Muay Thai'),
+        ('bodybuilding', 'Bodybuilding'),
+        ('fitness', 'Fitness'),
+    ]
+
+    place_type = models.CharField(
+        max_length=20,
+        choices=PLACE_TYPE_CHOICES,
+        default='fitness',
+        db_index=True
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     latitude = models.FloatField()

@@ -6,13 +6,18 @@
     <title>Fit mapa</title>
 
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         #map {
-            height: 100vh;
+            height: 100%;
             width: 100%;
         }
     </style>
@@ -23,5 +28,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{% static 'map.js' %}"></script>
+
 </body>
 </html>

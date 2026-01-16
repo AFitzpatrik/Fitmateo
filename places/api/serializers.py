@@ -25,3 +25,10 @@ class PlaceSerializer(serializers.ModelSerializer):
             'average_rating',
             'reviews_count',
         )
+        read_only_fields = (
+            'id',
+            'tags',
+            'average_rating',
+            'reviews_count',
+        )
+
