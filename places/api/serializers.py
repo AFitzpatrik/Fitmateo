@@ -21,14 +21,8 @@ class PlaceSerializer(serializers.ModelSerializer):
             'description',
             'latitude',
             'longitude',
+            'place_type',   # ← TOTO JE KLÍČ
             'tags',
             'average_rating',
             'reviews_count',
         )
-        read_only_fields = (
-            'id',
-            'tags',
-            'average_rating',
-            'reviews_count',
-        )
-

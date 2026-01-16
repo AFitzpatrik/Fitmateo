@@ -1,155 +1,165 @@
 console.log('map.js loaded');
 
-document.addEventListener('DOMContentLoaded', function () {
+/* =========================
+   MAP INIT
+========================= */
 
-    /* =========================
-       MAP INIT
-    ========================= */
+const map = L.map('map').setView([50.0755, 14.4378], 12);
 
-    const map = L.map('map').setView([50.0755, 14.4378], 12);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
 
 
-    /* =========================
-       SVG ICONS
-    ========================= */
+/* =========================
+   SVG ICONS
+========================= */
 
-    const markerIcons = {
-        kickbox: L.icon({
-            iconUrl: '/static/markers/kickbox.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-        box: L.icon({
-            iconUrl: '/static/markers/box.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-        mma: L.icon({
-            iconUrl: '/static/markers/mma.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-        muaythai: L.icon({
-            iconUrl: '/static/markers/muaythai.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-        bodybuilding: L.icon({
-            iconUrl: '/static/markers/bodybuilding.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-        fitness: L.icon({
-            iconUrl: '/static/markers/fitness.svg',
-            iconSize: [40, 60],
-            iconAnchor: [20, 60],
-            popupAnchor: [0, -60],
-        }),
-    };
+const markerIcons = {
+    kickbox: L.icon({
+        iconUrl: '/static/markers/kickbox.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+    box: L.icon({
+        iconUrl: '/static/markers/box.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+    mma: L.icon({
+        iconUrl: '/static/markers/mma.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+    muaythai: L.icon({
+        iconUrl: '/static/markers/muaythai.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+    bodybuilding: L.icon({
+        iconUrl: '/static/markers/bodybuilding.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+    fitness: L.icon({
+        iconUrl: '/static/markers/fitness.svg',
+        iconSize: [40, 60],
+        iconAnchor: [20, 60],
+    }),
+};
 
-    function getMarkerIcon(placeType) {
-        return markerIcons[placeType] || markerIcons.fitness;
-    }
+function getMarkerIcon(type) {
+    return markerIcons[type] || markerIcons.fitness;
+}
 
 
-    /* =========================
-       STARS
-    ========================= */
+/* =========================
+   LOAD PLACES
+========================= */
 
-    function renderStars(rating) {
-        const fullStars = Math.floor(rating);
-        const halfStar = rating % 1 !== 0;
-        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-        let stars = '';
-        for (let i = 0; i < fullStars; i++) stars += '⭐';
-        if (halfStar) stars += '✩';
-        for (let i = 0; i < emptyStars; i++) stars += '☆';
-
-        return stars;
-    }
-
-
-    /* =========================
-       LOAD PLACES
-    ========================= */
-
-    function loadPlaces() {
-        fetch('/api/places/')
-            .then(res => res.json())
-            .then(data => {
-                data.forEach(place => {
-                    const marker = L.marker(
-                        [place.latitude, place.longitude],
-                        { icon: getMarkerIcon(place.place_type) }
-                    ).addTo(map);
-
-                    marker.bindPopup(`
-                        <strong>${place.name}</strong><br>
-                        ${place.description || ''}<br><br>
-                        ${renderStars(place.average_rating)}<br>
-                        <small>${place.average_rating} / 5 · ${place.reviews_count} recenzí</small>
-                    `);
-                });
-            });
-    }
-
-    loadPlaces();
-
-
-    /* =========================
-       ADD PLACE BY CLICK
-    ========================= */
-
-    map.on('click', function (e) {
-        const lat = Number(e.latlng.lat.toFixed(6));
-        const lng = Number(e.latlng.lng.toFixed(6));
-
-        const name = prompt('Název místa');
-        if (!name) return;
-
-        const description = prompt('Popis místa') || '';
-
-        const placeType = prompt(
-            'Typ místa:\n' +
-            'kickbox / box / mma / muaythai / bodybuilding / fitness'
-        );
-        if (!placeType) return;
-
-        fetch('/api/places/create/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name,
-                description,
-                latitude: lat,
-                longitude: lng,
-                place_type: placeType
-            })
-        })
-        .then(res => res.json())
-        .then(place => {
-            const marker = L.marker(
+fetch('/api/places/')
+    .then(r => r.json())
+    .then(data => {
+        data.forEach(place => {
+            L.marker(
                 [place.latitude, place.longitude],
                 { icon: getMarkerIcon(place.place_type) }
-            ).addTo(map);
-
-            marker.bindPopup(`
-                <strong>${place.name}</strong><br>
-                ${place.description || ''}<br><br>
-                ⭐ 0 / 5<br>
-                <small>0 recenzí</small>
-            `).openPopup();
+            )
+            .addTo(map)
+            .bindPopup(`<strong>${place.name}</strong><br>${place.description || ''}`);
         });
     });
 
+
+/* =========================
+   ADD PLACE
+========================= */
+
+map.on('click', function (e) {
+
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+
+    const html = `
+        <div id="popup-form">
+            <label>Název</label><br>
+            <input id="name"><br><br>
+
+            <label>Popis</label><br>
+            <textarea id="desc"></textarea><br><br>
+
+            <label>Typ místa</label><br>
+            <select id="type">
+                <option value="fitness">Fitness</option>
+                <option value="bodybuilding">Bodybuilding</option>
+                <option value="box">Box</option>
+                <option value="kickbox">Kickbox</option>
+                <option value="mma">MMA</option>
+                <option value="muaythai">Muay Thai</option>
+            </select><br><br>
+
+            <button id="save">Uložit</button>
+        </div>
+    `;
+
+    L.popup()
+        .setLatLng(e.latlng)
+        .setContent(html)
+        .openOn(map);
+
+    // ⬇️ TADY JE KLÍČ
+    setTimeout(() => {
+
+        const btn = document.getElementById('save');
+        const form = document.getElementById('popup-form');
+
+        // zabráníme klikům padat na mapu
+        L.DomEvent.disableClickPropagation(form);
+
+        btn.onclick = function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+
+            const name = document.getElementById('name').value.trim();
+            const desc = document.getElementById('desc').value.trim();
+            const type = document.getElementById('type').value;
+
+            if (!name) {
+                alert('Vyplň název');
+                return;
+            }
+
+            fetch('/api/places/create/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    description: desc,
+                    latitude: lat,
+                    longitude: lng,
+                    place_type: type
+                })
+            })
+            .then(r => {
+                console.log('POST STATUS', r.status);
+                return r.json();
+            })
+            .then(place => {
+                L.marker(
+                    [place.latitude, place.longitude],
+                    { icon: getMarkerIcon(place.place_type) }
+                )
+                .addTo(map)
+                .bindPopup(`<strong>${place.name}</strong><br>${place.description}`)
+                .openPopup();
+
+                map.closePopup();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Chyba při ukládání');
+            });
+        };
+
+    }, 0);
 });

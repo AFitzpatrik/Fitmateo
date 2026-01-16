@@ -29,11 +29,10 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('events/', EventListView.as_view(template_name='events.html'), name='events'),
 
-    #API
-    path('admin/', admin.site.urls),
-    path('api/', include('places.api.urls')),
+    # API – JEN JEDNO
     path('', include('places.urls')),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
