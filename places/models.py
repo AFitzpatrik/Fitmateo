@@ -1,22 +1,29 @@
 from decimal import Decimal
+import os
 
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.db.models import Avg
+from django.utils.text import slugify
 
 
 def validate_half_step(value):
     if (value * Decimal('2')) % 1 != 0:
-        raise ValidationError('Hodnocení musí být v půlkrocích (např. 0.0, 0.5, 1.0, 1.5...).')
+        raise ValidationError('Rating must be in 0.5 steps')
+
+
+def place_image_path(instance, filename):
+    name_slug = slugify(instance.name)
+    return os.path.join('places', name_slug, filename)
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True, db_index=True)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
-        return f'#{self.name}'
+        return self.name
 
 
 class Place(models.Model):
@@ -38,22 +45,16 @@ class Place(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-
     latitude = models.FloatField()
     longitude = models.FloatField()
 
     image = models.ImageField(
-        upload_to='places/',
+        upload_to=place_image_path,
         blank=True,
         null=True
     )
 
-    tags = models.ManyToManyField(
-        Tag,
-        related_name='places',
-        blank=True
-    )
-
+    tags = models.ManyToManyField(Tag, related_name='places', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def average_rating(self):
@@ -75,13 +76,11 @@ class Review(models.Model):
         related_name='reviews',
         on_delete=models.CASCADE
     )
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='reviews',
         on_delete=models.CASCADE
     )
-
     rating = models.DecimalField(
         max_digits=2,
         decimal_places=1,
@@ -91,7 +90,6 @@ class Review(models.Model):
             validate_half_step
         ]
     )
-
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

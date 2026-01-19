@@ -1,10 +1,7 @@
-import json
-
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.db.models import Prefetch
 
 from .models import Place, Tag
 
@@ -14,14 +11,9 @@ def map_view(request):
 
 
 def places_list_api(request):
-    places = (
-        Place.objects
-        .prefetch_related('tags', 'reviews')
-        .all()
-    )
+    places = Place.objects.prefetch_related('tags', 'reviews')
 
     data = []
-
     for place in places:
         data.append({
             'id': place.id,
@@ -42,20 +34,16 @@ def places_list_api(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 def place_create_api(request):
-    body = json.loads(request.body.decode('utf-8'))
+    name = request.POST.get('name')
+    description = request.POST.get('description', '')
+    latitude = request.POST.get('latitude')
+    longitude = request.POST.get('longitude')
+    place_type = request.POST.get('place_type', 'fitness')
+    image = request.FILES.get('image')
+    tags = request.POST.getlist('tags[]')
 
-    name = body.get('name')
-    description = body.get('description', '')
-    latitude = body.get('latitude')
-    longitude = body.get('longitude')
-    place_type = body.get('place_type', 'fitness')
-    tags_input = body.get('tags', [])
-
-    if not name or latitude is None or longitude is None:
-        return JsonResponse(
-            {'error': 'Missing required fields'},
-            status=400
-        )
+    if not name or not latitude or not longitude:
+        return JsonResponse({'error': 'Missing fields'}, status=400)
 
     place = Place.objects.create(
         name=name,
@@ -63,17 +51,16 @@ def place_create_api(request):
         latitude=latitude,
         longitude=longitude,
         place_type=place_type,
+        image=image
     )
 
-    # TAGY – max 10
-    if isinstance(tags_input, list):
-        for tag_name in tags_input[:10]:
-            tag_name = tag_name.strip().lower()
-            if not tag_name:
-                continue
+    for tag_name in tags[:10]:
+        tag_name = tag_name.strip().lower()
+        if not tag_name:
+            continue
 
-            tag, _ = Tag.objects.get_or_create(name=tag_name)
-            place.tags.add(tag)
+        tag, _ = Tag.objects.get_or_create(name=tag_name)
+        place.tags.add(tag)
 
     return JsonResponse({
         'id': place.id,

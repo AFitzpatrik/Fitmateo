@@ -1,15 +1,18 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
     <title>Fit mapa</title>
 
+    <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
+
+    <!-- Custom map styles -->
+    <link rel="stylesheet" href="{% static 'map.css' %}">
 
     <style>
         html, body {
@@ -27,7 +30,10 @@
 
 <div id="map"></div>
 
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Map logic -->
 <script src="{% static 'map.js' %}"></script>
 
 </body>

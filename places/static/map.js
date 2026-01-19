@@ -1,64 +1,52 @@
 console.log('map.js loaded');
 
 /* =========================
+   CSRF
+========================= */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie) {
+        document.cookie.split(';').forEach(cookie => {
+            const c = cookie.trim();
+            if (c.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(c.slice(name.length + 1));
+            }
+        });
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+/* =========================
    MAP INIT
 ========================= */
-
 const map = L.map('map').setView([50.0755, 14.4378], 12);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
 }).addTo(map);
 
-
 /* =========================
-   SVG ICONS
+   MARKER ICONS
 ========================= */
-
 const markerIcons = {
-    kickbox: L.icon({
-        iconUrl: '/static/markers/KB.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
-    box: L.icon({
-        iconUrl: '/static/markers/BOX.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
-    mma: L.icon({
-        iconUrl: '/static/markers/MMA.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
-    muaythai: L.icon({
-        iconUrl: '/static/markers/MT.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
-    bodybuilding: L.icon({
-        iconUrl: '/static/markers/BB.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
-    fitness: L.icon({
-        iconUrl: '/static/markers/FITNESS.svg',
-        iconSize: [40, 60],
-        iconAnchor: [20, 60],
-    }),
+    kickbox: L.icon({ iconUrl: '/static/markers/KB.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
+    box: L.icon({ iconUrl: '/static/markers/BOX.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
+    mma: L.icon({ iconUrl: '/static/markers/MMA.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
+    muaythai: L.icon({ iconUrl: '/static/markers/MT.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
+    bodybuilding: L.icon({ iconUrl: '/static/markers/BB.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
+    fitness: L.icon({ iconUrl: '/static/markers/FITNESS.svg', iconSize: [40, 60], iconAnchor: [20, 60] }),
 };
 
 function getMarkerIcon(type) {
     return markerIcons[type] || markerIcons.fitness;
 }
 
-
 /* =========================
    LOAD PLACES
 ========================= */
-
 fetch('/api/places/')
-    .then(r => r.json())
+    .then(res => res.json())
     .then(data => {
         data.forEach(place => {
             L.marker(
@@ -66,100 +54,111 @@ fetch('/api/places/')
                 { icon: getMarkerIcon(place.place_type) }
             )
             .addTo(map)
-            .bindPopup(`<strong>${place.name}</strong><br>${place.description || ''}`);
+            .bindPopup(`
+                <strong>${place.name}</strong><br>
+                ${place.description || ''}
+            `);
         });
     });
-
 
 /* =========================
    ADD PLACE
 ========================= */
+let clickedLat = null;
+let clickedLng = null;
 
 map.on('click', function (e) {
-
-    const lat = e.latlng.lat;
-    const lng = e.latlng.lng;
-
-    const html = `
-        <div id="popup-form">
-            <label>Název</label><br>
-            <input id="name"><br><br>
-
-            <label>Popis</label><br>
-            <textarea id="desc"></textarea><br><br>
-
-            <label>Typ místa</label><br>
-            <select id="type">
-                <option value="fitness">Fitness</option>
-                <option value="bodybuilding">Bodybuilding</option>
-                <option value="box">Box</option>
-                <option value="kickbox">Kickbox</option>
-                <option value="mma">MMA</option>
-                <option value="muaythai">Muay Thai</option>
-            </select><br><br>
-
-            <button id="save">Uložit</button>
-        </div>
-    `;
+    clickedLat = e.latlng.lat.toFixed(6);
+    clickedLng = e.latlng.lng.toFixed(6);
 
     L.popup()
         .setLatLng(e.latlng)
-        .setContent(html)
+        .setContent(`
+            <div style="width:240px">
+                <label>Název</label><br>
+                <input id="place-name" style="width:100%"><br><br>
+
+                <label>Popis</label><br>
+                <textarea id="place-desc" rows="3" style="width:100%"></textarea><br><br>
+
+                <label>Typ místa</label><br>
+                <select id="place-type" style="width:100%">
+                    <option value="fitness">Fitness</option>
+                    <option value="bodybuilding">Bodybuilding</option>
+                    <option value="box">Box</option>
+                    <option value="kickbox">Kickbox</option>
+                    <option value="mma">MMA</option>
+                    <option value="muaythai">Muay Thai</option>
+                </select><br><br>
+
+                <label>Obrázek</label><br>
+                <input id="place-image" type="file"><br><br>
+
+                <label>Tagy</label><br>
+                <input id="place-tags" placeholder="#mma #sparring" style="width:100%"><br><br>
+
+                <button id="save-place">Uložit</button>
+            </div>
+        `)
         .openOn(map);
+});
 
-    // ⬇️ TADY JE KLÍČ
-    setTimeout(() => {
+map.on('popupopen', function () {
+    const btn = document.getElementById('save-place');
+    if (!btn) return;
 
-        const btn = document.getElementById('save');
-        const form = document.getElementById('popup-form');
+    btn.onclick = function () {
+        const name = document.getElementById('place-name').value.trim();
+        if (!name) {
+            alert('Vyplň název');
+            return;
+        }
 
-        // zabráníme klikům padat na mapu
-        L.DomEvent.disableClickPropagation(form);
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', document.getElementById('place-desc').value);
+        formData.append('place_type', document.getElementById('place-type').value);
+        formData.append('latitude', clickedLat);
+        formData.append('longitude', clickedLng);
 
-        btn.onclick = function (ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
+        const image = document.getElementById('place-image').files[0];
+        if (image) {
+            formData.append('image', image);
+        }
 
-            const name = document.getElementById('name').value.trim();
-            const desc = document.getElementById('desc').value.trim();
-            const type = document.getElementById('type').value;
+        document.getElementById('place-tags').value
+            .split(' ')
+            .map(t => t.replace('#', '').trim())
+            .filter(Boolean)
+            .slice(0, 10)
+            .forEach(tag => formData.append('tags[]', tag));
 
-            if (!name) {
-                alert('Vyplň název');
-                return;
-            }
+        fetch('/api/places/create/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            body: formData
+        })
+        .then(res => {
+            if (!res.ok) throw new Error();
+            return res.json();
+        })
+        .then(place => {
+            L.marker(
+                [clickedLat, clickedLng],
+                { icon: getMarkerIcon(place.place_type) }
+            )
+            .addTo(map)
+            .bindPopup(`
+                <strong>${place.name}</strong><br>
+                ${place.description || ''}
+            `);
 
-            fetch('/api/places/create/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    description: desc,
-                    latitude: lat,
-                    longitude: lng,
-                    place_type: type
-                })
-            })
-            .then(r => {
-                console.log('POST STATUS', r.status);
-                return r.json();
-            })
-            .then(place => {
-                L.marker(
-                    [place.latitude, place.longitude],
-                    { icon: getMarkerIcon(place.place_type) }
-                )
-                .addTo(map)
-                .bindPopup(`<strong>${place.name}</strong><br>${place.description}`)
-                .openPopup();
-
-                map.closePopup();
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Chyba při ukládání');
-            });
-        };
-
-    }, 0);
+            map.closePopup();
+        })
+        .catch(() => {
+            alert('Chyba při ukládání místa');
+        });
+    };
 });

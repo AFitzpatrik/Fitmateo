@@ -1,37 +1,50 @@
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
-from places.models import Place
+from places.models import Place, Tag
 from .serializers import PlaceSerializer
 
 
-class PlaceListAPIView(APIView):
-    permission_classes = [AllowAny]
+@api_view(['GET'])
+def places_list_api(request):
+    places = Place.objects.all()
+    serializer = PlaceSerializer(
+        places,
+        many=True,
+        context={'request': request}
+    )
+    return Response(serializer.data)
 
-    def get(self, request):
-        places = Place.objects.all()
-        serializer = PlaceSerializer(places, many=True)
-        return Response(serializer.data)
 
+@api_view(['POST'])
+def place_create_api(request):
+    print('🔥 PLACE CREATE API HIT 🔥')
 
-@method_decorator(csrf_exempt, name='dispatch')
-class PlaceCreateAPIView(APIView):
-    permission_classes = [AllowAny]
+    name = request.data.get('name')
+    description = request.data.get('description', '')
+    latitude = request.data.get('latitude')
+    longitude = request.data.get('longitude')
+    place_type = request.data.get('place_type', 'fitness')
+    image = request.FILES.get('image')
 
-    def post(self, request):
-        print('POST DATA:', request.data)
+    tags_raw = request.data.getlist('tags[]')
 
-        serializer = PlaceSerializer(data=request.data)
-        if serializer.is_valid():
-            place = serializer.save()
-            return Response(
-                PlaceSerializer(place).data,
-                status=status.HTTP_201_CREATED
-            )
+    place = Place.objects.create(
+        name=name,
+        description=description,
+        latitude=latitude,
+        longitude=longitude,
+        place_type=place_type,
+        image=image
+    )
 
-        print('ERRORS:', serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    for tag_name in tags_raw:
+        tag, _ = Tag.objects.get_or_create(name=tag_name)
+        place.tags.add(tag)
+
+    serializer = PlaceSerializer(
+        place,
+        context={'request': request}
+    )
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
