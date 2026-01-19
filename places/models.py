@@ -9,14 +9,14 @@ from django.db.models import Avg
 
 def validate_half_step(value):
     if (value * Decimal('2')) % 1 != 0:
-        raise ValidationError('Rating must be in 0.5 steps')
+        raise ValidationError('Hodnocení musí být v půlkrocích (např. 0.0, 0.5, 1.0, 1.5...).')
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True, db_index=True)
 
     def __str__(self):
-        return self.name
+        return f'#{self.name}'
 
 
 class Place(models.Model):
@@ -38,9 +38,22 @@ class Place(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+
     latitude = models.FloatField()
     longitude = models.FloatField()
-    tags = models.ManyToManyField(Tag, related_name='places', blank=True)
+
+    image = models.ImageField(
+        upload_to='places/',
+        blank=True,
+        null=True
+    )
+
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='places',
+        blank=True
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def average_rating(self):
@@ -62,11 +75,13 @@ class Review(models.Model):
         related_name='reviews',
         on_delete=models.CASCADE
     )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='reviews',
         on_delete=models.CASCADE
     )
+
     rating = models.DecimalField(
         max_digits=2,
         decimal_places=1,
@@ -76,6 +91,7 @@ class Review(models.Model):
             validate_half_step
         ]
     )
+
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
